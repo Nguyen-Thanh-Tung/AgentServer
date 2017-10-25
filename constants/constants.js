@@ -1,6 +1,8 @@
 const constants = {
-  numberServer: 10,
-  commandTest: 'wrk -t1 -c1 -d10s http://127.0.0.1:',
+  numberServer: 500,
+  commandTest: 'loadtest -c 1 -t 10 http://127.0.0.1:',
+  preNameServer: 'ws://',
+  nameServer: 'localhost:',
 };
 
 module.exports = constants;

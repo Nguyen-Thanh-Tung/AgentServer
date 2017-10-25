@@ -24,4 +24,5 @@ const rmdir = (dir) => {
 for (let i = 2; i <= numberServer; i += 1) {
   rmdir(path.join(thePath, folder + i));
 }
-fs.writeFile('./test_server/testRequestForAll.sh', `#!/bin/bash\n ${constant.commandTest}3000&`);
+fs.writeFile('./test_server/testRequestForAll.sh', '#!/bin/bash');
+fs.writeFile('./test_server/listServer.txt', '');
