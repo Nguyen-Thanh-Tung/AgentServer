@@ -14,8 +14,10 @@ helper.getPorts((ports) => {
   create(ports);
 });
 
+
 let create = (ports) => {
-  fs.appendFileSync('./test_server/testRequestForAll.sh', `\n${constant.commandTest}${parseInt(ports[0], 10)}&`);
+  // fs.appendFileSync('./test_server/testRequestForAll.sh', `\n${constant.commandTest}${parseInt(ports[0], 10)}&`);
+  fs.writeFile('./test_server/listServer.txt', '');
   fs.appendFileSync('./test_server/listServer.txt', `${constant.nameServer}${parseInt(ports[0], 10)}`);
 
   for (let i = 0; i < numberServer - 1; i += 1) {
@@ -24,7 +26,7 @@ let create = (ports) => {
       if (err) {
         return console.error(err);
       }
-      fs.appendFileSync('./test_server/testRequestForAll.sh', `\n${constant.commandTest}${parseInt(ports[i + 1], 10)}&`);
+      // fs.appendFileSync('./test_server/testRequestForAll.sh', `\n${constant.commandTest}${parseInt(ports[i + 1], 10)}&`);
       fs.appendFileSync('./test_server/listServer.txt', `\n${constant.nameServer}${parseInt(ports[i + 1], 10)}`);
     });
   }
