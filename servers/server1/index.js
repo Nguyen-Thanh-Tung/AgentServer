@@ -18,7 +18,7 @@ const WebSocket = require('ws');
 
 const wss = new WebSocket.Server({ server });
 agent.agent(wss);
-// app.use(agent.agentHttp());
+app.use(agent.agentHttp());
 
 exports.startServer = (port) => {
   server.listen(port, () => {

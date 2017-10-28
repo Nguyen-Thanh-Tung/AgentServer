@@ -28,7 +28,8 @@ exports.agent = (wss) => {
       const msg = JSON.parse(data);
       // msg.took = now() - msg.start; // time in ms from client to server
       // ws.send(JSON.stringify(msg));
-      logArr.push(getData(req, now() - msg.start));
+      const responseTime = Math.round((now() - msg.start) / 1000);
+      logArr.push(getData(req, responseTime));
       if (logArr.length >= maxLength || (now() - date) >= maxTime) {
         const dataSend = {
           server_id: serverId,
@@ -82,10 +83,10 @@ function getStatusCode(routerArray, path) {
 }
 
 function sendData(data, callback) {
-  const urlServer = `http://${serverHostName}:${serverPort}`;
+  const urlServer = `http://${serverHostName}:${serverPort}/reports/add-report`;
   const options = {
     url: urlServer,
-    form: data,
+    form: { data },
   };
   request.post(options, (error, response, body) => {});
   callback();

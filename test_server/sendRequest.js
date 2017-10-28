@@ -6,6 +6,7 @@ const constants = require('../constants/constants');
 
 const sendRequestArray = [];
 const requestPerServer = 30;
+const timeOut = 1000;
 const now = () => new Date().getTime();
 const pathArray = ['/demo', '/list', '/add', '/'];
 
@@ -31,11 +32,12 @@ function reSend(arr) {
     }
     const timeSend = new Date() - date;
     console.log(timeSend);
-    if (timeSend < 1000) {
-      setTimeout(() => { reSend(arr); }, (1000 - timeSend));
+    if (timeSend < timeOut) {
+      setTimeout(() => { reSend(arr); }, (timeOut - timeSend));
     } else {
       reSend(arr);
     }
+
   });
 }
 
