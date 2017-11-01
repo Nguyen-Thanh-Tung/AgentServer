@@ -11,7 +11,7 @@ agent.connectServer({
   serverPort: '8000',
   accountName: 'thanhtungtvg95',
   accountAccessKey: '123456',
-  serverId: '',
+  serverId: '59d9dc91d92b87391d251450',
 });
 
 const WebSocket = require('ws');

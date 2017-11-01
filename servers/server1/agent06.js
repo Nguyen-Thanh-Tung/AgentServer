@@ -14,15 +14,15 @@ let accountName; // Ten tai khoan he thong
 let accountAccessKey; // Access Key duoc cap cho tai khoan
 let serverId; // Ma Id cua nguon thu thap
 const logArr = [];
-const routerArr = ['/'];
+const routerArr = ['/', '/list', '/add'];
 const maxLength = 15; // number message
 const maxTime = 500; // ms
 let date;
+let ws1;
 
 const now = () => new Date().getTime();
 
 exports.agent = (wss) => {
-  const ws1 = new WebSocket(`ws://${serverHostName}:${serverPort}`);
   wss.on('connection', (ws, req) => {
     ws.on('message', (data) => {
       const msg = JSON.parse(data);
@@ -49,14 +49,22 @@ exports.agentHttp = () => morgan(format, {
     write: (obj) => {
       logArr.push(JSON.parse(obj));
       if (logArr.length >= maxLength || (now() - date) >= maxTime) {
-        sendData(JSON.stringify({
+        // sendData(JSON.stringify({
+        //   server_id: serverId,
+        //   connection: 5,
+        //   logs: logArr,
+        // }), () => {
+        //   logArr.length = 0;
+        //   date = new Date();
+        // });
+        const dataSend = {
           server_id: serverId,
-          connection: 5,
+          connection: 1,
           logs: logArr,
-        }), () => {
-          logArr.length = 0;
-          date = new Date();
-        });
+        };
+        ws1.send(JSON.stringify(dataSend));
+        logArr.length = 0;
+        date = new Date();
       }
     },
   },
@@ -68,6 +76,7 @@ exports.connectServer = (data) => {
   accountName = data.accountName;
   accountAccessKey = data.accountAccessKey;
   serverId = data.serverId;
+  ws1 = new WebSocket(`ws://${serverHostName}:${serverPort}`);
 };
 
 function getStatusCode(routerArray, path) {

@@ -5,7 +5,7 @@ const fs = require('fs');
 const constants = require('../constants/constants');
 
 const sendRequestArray = [];
-const requestPerServer = 30;
+const requestPerServer = 100;
 const timeOut = 1000;
 const now = () => new Date().getTime();
 const pathArray = ['/demo', '/list', '/add', '/'];
