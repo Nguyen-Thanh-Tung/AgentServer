@@ -5,24 +5,30 @@ const fs = require('fs');
 const constants = require('../constants/constants');
 
 const sendRequestArray = [];
-const requestPerServer = 100;
-const timeOut = 1000;
+const {
+  numberServer, preNameServer,
+} = constants;
+
+const { requestPerServer, timeOut } = constants.sendRequest;
 const now = () => new Date().getTime();
 const pathArray = ['/demo', '/list', '/add', '/'];
+exports.sendAll = () => {
+  const lineReader = require('readline').createInterface({
+    input: fs.createReadStream('./configurations/listServer.txt'),
+  });
 
-const lineReader = require('readline').createInterface({
-  input: fs.createReadStream('./test_server/listServer.txt'),
-});
+  lineReader.on('line', (line) => {
+    if (line.toString() !== '') {
+      const random = Math.round(Math.random() * (pathArray.length - 1));
+      const server = line.toString() + pathArray[random];
+      sendRequestArray.push(sendRequestWithSocket.bind(null, server));
+    }
 
-lineReader.on('line', (line) => {
-  const random = Math.round(Math.random() * (pathArray.length - 1));
-  const server = line.toString() + pathArray[random];
-  sendRequestArray.push(sendRequestWithSocket.bind(null, server));
-
-  if (sendRequestArray.length === constants.numberServer) {
-    reSend(sendRequestArray);
-  }
-});
+    if (sendRequestArray.length === numberServer) {
+      reSend(sendRequestArray);
+    }
+  });
+};
 
 function reSend(arr) {
   const date = new Date();
@@ -37,12 +43,11 @@ function reSend(arr) {
     } else {
       reSend(arr);
     }
-
   });
 }
 
 function sendRequestWithSocket(server, callback) {
-  const wst = new WebSocket(constants.preNameServer + server);
+  const wst = new WebSocket(preNameServer + server);
   wst.on('open', () => {
     for (let i = 0; i < requestPerServer; i += 1) {
       wst.send(JSON.stringify({ start: now() }));
