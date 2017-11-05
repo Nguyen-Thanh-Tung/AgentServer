@@ -1,9 +1,9 @@
 const constants = {
-  numberServer: 20,
+  numberServer: 0,
   commandTest: 'loadtest -c 1 -t 10 http://127.0.0.1:',
   preNameServer: 'ws://',
   nameServer: 'localhost:',
-  ipServer: '192.168.1.209',
+  ipServer: '127.0.0.1',
   portServer: '8000',
   error: {
     connectDB: 'Error when connect db',
