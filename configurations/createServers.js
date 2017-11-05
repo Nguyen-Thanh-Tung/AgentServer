@@ -100,7 +100,7 @@ function addServer(port, cb) {
   async.parallel([
     function (callback) {
       const accountId = account;
-      const serverName = `DSD${count}`;
+      const serverName = `DSD06-${count}-${ipLocal}`;
       const domain = faker.internet.domainName();
       const serverIp = ipLocal;
       const description = `Server at ${serverIp}:${port}`;
@@ -110,7 +110,7 @@ function addServer(port, cb) {
         domain,
         serverIp,
         port,
-        description,
+        description
       ];
 
       createServer(serverParams, callback);

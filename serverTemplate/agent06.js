@@ -21,29 +21,25 @@ const routerArr = ['/', '/list', '/add'];
 const maxLength = constants.agent.maxNumberResponse; // number message
 const maxTime = constants.agent.maxTimeWait; // ms
 let date;
-let ws1;
+let ws1 = null;
 
 const now = () => new Date().getTime();
 
 exports.agent = (wss) => {
   wss.on('connection', (ws, req) => {
     ws.on('message', (data) => {
-      const msg = JSON.parse(data);
-      // msg.took = now() - msg.start; // time in ms from client to server
-      // ws.send('ok');
-      const responseTime = (now() - msg.start) / 1000;
-      logArr.push(getData(req, responseTime));
-      if (logArr.length >= maxLength || (now() - date) >= maxTime) {
-        const dataSend = {
-          serverName: serverLocalName,
-          serverIp: serverLocalIp,
-          serverId,
-          connection: wss.clients.size,
-          logs: logArr,
-        };
-        ws1.send(JSON.stringify(dataSend));
-        logArr.length = 0;
-        date = new Date();
+      if (ws1 && ws1.readyState === 1) {
+        const msg = JSON.parse(data);
+        // msg.took = now() - msg.start; // time in ms from client to server
+        // ws.send('ok');
+        const responseTime = (now() - msg.start) / 1000;
+        logArr.push(getData(req, responseTime));
+        if (logArr.length >= maxLength || (now() - date) >= maxTime) {
+          const dataSend = setMessage(wss.clients.size);
+          sendMessage(dataSend);
+          logArr.length = 0;
+          date = new Date();
+        }
       }
     });
   });
@@ -52,34 +48,36 @@ exports.agent = (wss) => {
 exports.agentHttp = () => morgan(format, {
   stream: {
     write: (obj) => {
-      logArr.push(JSON.parse(obj));
-      if (logArr.length >= maxLength || (now() - date) >= maxTime) {
-        // sendData(JSON.stringify({
-        //   serverName: serverLocalName,
-        //   serverIp: serverLocalIp,
-        //   serverId,
-        //   connection: 5,
-        //   logs: logArr,
-        // }), () => {
-        //   logArr.length = 0;
-        //   date = new Date();
-        // });
-        const dataSend = {
-          serverName: serverLocalName,
-          serverIp: serverLocalIp,
-          serverId,
-          connection: 1,
-          logs: logArr,
-        };
-        ws1.send(JSON.stringify(dataSend));
-        logArr.length = 0;
-        date = new Date();
+      if (ws1 && ws1.readyState === 1) {
+        logArr.push(JSON.parse(obj));
+        if (logArr.length >= maxLength || (now() - date) >= maxTime) {
+          // sendData(JSON.stringify({
+          //   serverName: serverLocalName,
+          //   serverIp: serverLocalIp,
+          //   serverId,
+          //   connection: 5,
+          //   logs: logArr,
+          // }), () => {
+          //   logArr.length = 0;
+          //   date = new Date();
+          // });
+          const dataSend = setMessage(1);
+          sendMessage(dataSend);
+          logArr.length = 0;
+          date = new Date();
+        }
       }
     },
   },
 });
 
+// Get info of server
 exports.connectServer = (data) => {
+  getInfoServer(data);
+  ws1 = connectServer(serverHostName, serverPort);
+};
+
+function getInfoServer(data) {
   serverHostName = data.serverHostName;
   serverPort = data.serverPort;
   accountName = data.accountName;
@@ -87,8 +85,7 @@ exports.connectServer = (data) => {
   serverLocalIp = data.serverLocalIp;
   serverId = data.serverId;
   serverLocalName = data.serverLocalName;
-  ws1 = new WebSocket(`ws://${serverHostName}:${serverPort}`);
-};
+}
 
 function getStatusCode(routerArray, path) {
   // urlExists(`http://${req.headers.host}/tung`,(err, exists) => {
@@ -112,6 +109,7 @@ function sendData(data, callback) {
   callback();
 }
 
+// Get Log
 function getData(req, responseTime) {
   const uri = url.parse(req.url, true).pathname;
   const statusCode = getStatusCode(routerArr, uri);
@@ -120,7 +118,25 @@ function getData(req, responseTime) {
     url: uri,
     method: req.method,
     res: contentLength,
-    status: getStatusCode(routerArr, uri),
+    status: statusCode,
     'response-time': responseTime,
   };
+}
+
+function setMessage(connection) {
+  return {
+    serverName: serverLocalName,
+    serverIp: serverLocalIp,
+    serverId,
+    connection,
+    logs: logArr,
+  };
+}
+
+function connectServer(host, port) {
+  return new WebSocket(`ws://${host}:${port}`);
+}
+
+function sendMessage(message) {
+  ws1.send(JSON.stringify(message));
 }

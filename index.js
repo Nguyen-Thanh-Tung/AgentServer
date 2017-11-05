@@ -81,6 +81,13 @@ app.get('/sendRequest', (req, res) => {
       recursive: true,
       silent: true,
     });
+    replace({
+      regex: `maxNumberResponse: ${tempRequestPerServer},`,
+      replacement: `maxNumberResponse: ${requestPerServer},`,
+      paths: [file],
+      recursive: true,
+      silent: true,
+    });
     tempRequestPerServer = requestPerServer;
 
     require('./configurations/sendRequest').sendAll();

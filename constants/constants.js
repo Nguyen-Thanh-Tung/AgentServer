@@ -1,5 +1,5 @@
 const constants = {
-  numberServer: 30,
+  numberServer: 20,
   commandTest: 'loadtest -c 1 -t 10 http://127.0.0.1:',
   preNameServer: 'ws://',
   nameServer: 'localhost:',
