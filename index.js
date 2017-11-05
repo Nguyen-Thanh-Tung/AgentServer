@@ -8,10 +8,10 @@ const path = require('path');
 let isOpen = false;
 const file = path.join('./constants', 'constants.js');
 
-let { numberServer} = constant;
+let { numberServer } = constant;
 let tempNumberServer = numberServer;
 let tempIpServer = constant.ipServer;
-let tempPortServer = constant.portServer;
+const tempPortServer = constant.portServer;
 let tempRequestPerServer = constant.sendRequest.requestPerServer;
 
 const app = express();
@@ -43,15 +43,15 @@ app.get('/createServer/:number/:serverIp', (req, res) => {
   if (shell.exec('node ./configurations/createServers').code !== 0) {
     shell.echo('Error: Cant create server');
     shell.exit(1);
-    res.send({
+    res.send(`callback(${JSON.stringify({
       status: 500,
       message: 'Cant create server',
-    });
+    })})`);
   } else {
-    res.json({
+    res.send(`callback(${JSON.stringify({
       status: 200,
       message: 'Create success server',
-    });
+    })})`);
   }
 });
 
@@ -68,10 +68,10 @@ function config(host) {
 
 app.get('/sendRequest', (req, res) => {
   if (!isOpen) {
-    res.json({
+    res.send(`callback(${JSON.stringify({
       status: 404,
       message: 'Not open server',
-    });
+    })})`);
   } else {
     const requestPerServer = req.query.number;
     replace({
@@ -91,27 +91,34 @@ app.get('/sendRequest', (req, res) => {
     tempRequestPerServer = requestPerServer;
 
     require('./configurations/sendRequest').sendAll();
-    res.json({
+    res.send(`callback(${JSON.stringify({
       status: 200,
       message: 'Sending request to server',
-    });
+    })})`);
   }
 });
-
+app.get('/stopSend', (req, res) => {
+  require('./configurations/sendRequest').stopSend();
+  res.send(`callback(${JSON.stringify({
+    status: 200,
+    message: 'Stop send request to server',
+  })})`);
+});
 app.get('/startServer', (req, res) => {
   startAllSever();
-  res.json({
+  res.send(`callback(${JSON.stringify({
     status: 200,
     message: 'Start server success',
-  });
+  })})`);
 });
 
 app.get('/closeServer', (req, res) => {
+  require('./configurations/sendRequest').stopSend();
   stopAllServer();
-  res.json({
+  res.send(`callback(${JSON.stringify({
     status: 200,
     message: 'Stop server success',
-  });
+  })})`);
 });
 
 function startAllSever() {

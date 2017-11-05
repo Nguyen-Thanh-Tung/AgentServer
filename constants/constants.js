@@ -3,7 +3,7 @@ const constants = {
   commandTest: 'loadtest -c 1 -t 10 http://127.0.0.1:',
   preNameServer: 'ws://',
   nameServer: 'localhost:',
-  ipServer: '127.0.0.1',
+  ipServer: '192.168.1.209',
   portServer: '8000',
   error: {
     connectDB: 'Error when connect db',
