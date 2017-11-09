@@ -13,6 +13,7 @@ let tempNumberServer = numberServer;
 let tempIpServer = constant.ipServer;
 const tempPortServer = constant.portServer;
 let tempRequestPerServer = constant.sendRequest.requestPerServer;
+let tempNumberResponse = constant.agent.maxNumberResponse;
 
 const app = express();
 
@@ -76,19 +77,20 @@ app.get('/sendRequest', (req, res) => {
     const requestPerServer = req.query.number;
     replace({
       regex: `requestPerServer: ${tempRequestPerServer},`,
-      replacement: `requestPerServer: ${requestPerServer},`,
+      replacement: `requestPerServer: ${Math.round(requestPerServer/2)},`,
       paths: [file],
       recursive: true,
       silent: true,
     });
     replace({
-      regex: `maxNumberResponse: ${tempRequestPerServer},`,
+      regex: `maxNumberResponse: ${tempNumberResponse},`,
       replacement: `maxNumberResponse: ${requestPerServer},`,
       paths: [file],
       recursive: true,
       silent: true,
     });
-    tempRequestPerServer = requestPerServer;
+    tempRequestPerServer = Math.round(requestPerServer/2);
+    tempNumberResponse = requestPerServer;
 
     require('./configurations/sendRequest').sendAll();
     res.send(`callback(${JSON.stringify({
@@ -105,37 +107,45 @@ app.get('/stopSend', (req, res) => {
   })})`);
 });
 app.get('/startServer', (req, res) => {
-  startAllSever();
-  res.send(`callback(${JSON.stringify({
-    status: 200,
-    message: 'Start server success',
-  })})`);
+  startAllSever(() => {
+    res.send(`callback(${JSON.stringify({
+      status: 200,
+      message: 'Start server success',
+    })})`);
+  });
 });
 
 app.get('/closeServer', (req, res) => {
   require('./configurations/sendRequest').stopSend();
-  stopAllServer();
-  res.send(`callback(${JSON.stringify({
-    status: 200,
-    message: 'Stop server success',
-  })})`);
+  stopAllServer(() => {
+    res.send(`callback(${JSON.stringify({
+      status: 200,
+      message: 'Stop server success',
+    })})`);
+  });
 });
 
-function startAllSever() {
+function startAllSever(callback) {
   if (!isOpen) {
     helper.getPorts((ports) => {
       for (let i = 0; i < numberServer; i += 1) {
         require(`./servers/server${i + 1}`).startServer(parseInt(ports[i], 10));
+        if (i === numberServer - 1) {
+          callback();
+        }
       }
     });
     isOpen = true;
   }
 }
 
-function stopAllServer() {
+function stopAllServer(callback) {
   if (isOpen) {
     for (let i = 0; i < tempNumberServer; i += 1) {
       require(`./servers/server${i + 1}`).stopServer();
+      if (i === tempNumberServer - 1) {
+        callback();
+      }
     }
     isOpen = false;
   }

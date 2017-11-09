@@ -11,6 +11,7 @@ const {
 } = constants;
 
 const { requestPerServer, timeOut } = constants.sendRequest;
+console.log(requestPerServer);
 const now = () => new Date().getTime();
 const pathArray = ['/demo', '/list', '/add', '/'];
 exports.sendAll = () => {
