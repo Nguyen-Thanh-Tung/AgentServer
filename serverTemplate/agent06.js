@@ -32,11 +32,15 @@ exports.agent = (wss) => {
         const msg = JSON.parse(data);
         // msg.took = now() - msg.start; // time in ms from client to server
         // ws.send('ok');
-        const responseTime = (now() - msg.start) / 1000;
+        const responseTime = now() - msg.start;
         logArr.push(getData(req, responseTime));
         if (logArr.length >= maxLength || (now() - date) >= maxTime) {
-          const dataSend = setMessage(wss.clients.size);
-          sendMessage(dataSend);
+          ws1.send(JSON.stringify({
+            serverName: serverLocalName,
+            serverIp: serverLocalIp,
+            serverId,
+            logs: logArr,
+          }));
           logArr.length = 0;
           date = new Date();
         }
@@ -115,20 +119,21 @@ function getData(req, responseTime) {
   const statusCode = getStatusCode(routerArr, uri);
   const contentLength = (statusCode === '404') ? 0 : 10;
   return {
-    url: uri,
+    serverName: serverLocalName,
+    serverIp: serverLocalIp,
+    path: uri,
     method: req.method,
-    res: contentLength,
+    contentLength,
     status: statusCode,
-    'response-time': responseTime,
+    responseTime,
   };
 }
 
-function setMessage(connection) {
+function setMessage() {
   return {
     serverName: serverLocalName,
     serverIp: serverLocalIp,
     serverId,
-    connection,
     logs: logArr,
   };
 }

@@ -24,12 +24,12 @@ const constants = {
   secretJWTKey: 'dsd06bkhn',
 
   sendRequest: {
-    requestPerServer: 15,
+    requestPerServer: 10,
     timeOut: 500,
   },
   agent: {
     maxTimeWait: 500,
-    maxNumberResponse: 30,
+    maxNumberResponse: 15,
   },
 };
 

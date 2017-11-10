@@ -10,9 +10,9 @@ let localPort = '';
 agent.connectServer({
   serverHostName: '127.0.0.1',
   serverPort: '8000',
-  accountName: '5a039a99df43602bc965afe7',
-  accountAccessKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwicGFzc3dvcmQiOiIkMmEkMDgkOGwwaFYvNFpST1VRckQwMTF6WUJXT1cwMURkZGxkVWFiZ3dHbUp4ZnBrMFhqeFRpTjBpQ0cifQ.mEhrm_DHdL3VIK55IMNBc70AG_gYRBmCrTW0lC-NAOM',
-  serverId: '5a039a9adf43602bc965afe8',
+  accountName: '5a0504b089c8053486bde546',
+  accountAccessKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwicGFzc3dvcmQiOiIkMmEkMDgkblp5NlVtRmkuekRtbnBYSHVZcmpiLklTWmFVYy9DL1pGRHFrSnEuQzI1ZWlnb1NoUlJHRXEifQ.MHWQ9_-TR-pmR9VGIOe_lQBf33y4StGJYyEDSh0NjNE',
+  serverId: '5a0504b089c8053486bde547',
   serverLocalIp: '192.168.1.209',
   serverLocalName: 'DSD06-1-192.168.1.209',
 });
