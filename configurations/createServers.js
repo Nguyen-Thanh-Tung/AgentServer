@@ -56,7 +56,7 @@ let create = (ports) => {
                 } else {
                   afterCreateServer();
                 }
-              },
+              }
             );
           }
         });
