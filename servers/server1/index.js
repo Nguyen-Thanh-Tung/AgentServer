@@ -8,13 +8,13 @@ const server = http.createServer(app);
 let localPort = '';
 
 agent.connectServer({
-  serverHostName: '127.0.0.1',
+  serverHostName: '10.10.153.136',
   serverPort: '8000',
-  accountName: '5a0504b089c8053486bde546',
-  accountAccessKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwicGFzc3dvcmQiOiIkMmEkMDgkblp5NlVtRmkuekRtbnBYSHVZcmpiLklTWmFVYy9DL1pGRHFrSnEuQzI1ZWlnb1NoUlJHRXEifQ.MHWQ9_-TR-pmR9VGIOe_lQBf33y4StGJYyEDSh0NjNE',
-  serverId: '5a0504b089c8053486bde547',
-  serverLocalIp: '192.168.1.209',
-  serverLocalName: 'DSD06-1-192.168.1.209',
+  accountName: '5a0fe88d66b16b14153c6f29',
+  accountAccessKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwicGFzc3dvcmQiOiIkMmEkMDgkMmJVSTQyVlVSbkdoVVFyLmRIT3hyLkJyWmx5LnVXOWJ3b3dyVHEuQS5aM1p6a00zNUROTksifQ.3vcSHjh_le0mVS339cIS-dmrL9ClXDadnqKzwFuwzDw',
+  serverId: '5a0fe88d66b16b14153c6f2a',
+  serverLocalIp: '10.10.44.24',
+  serverLocalName: 'DSD06-1-10.10.44.24',
 });
 
 const WebSocket = require('ws');

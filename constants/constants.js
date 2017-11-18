@@ -3,7 +3,7 @@ const constants = {
   commandTest: 'loadtest -c 1 -t 10 http://127.0.0.1:',
   preNameServer: 'ws://',
   nameServer: 'localhost:',
-  ipServer: '127.0.0.1',
+  ipServer: '10.10.153.136',
   portServer: '8000',
   error: {
     connectDB: 'Error when connect db',
@@ -24,12 +24,12 @@ const constants = {
   secretJWTKey: 'dsd06bkhn',
 
   sendRequest: {
-    requestPerServer: 10,
-    timeOut: 500,
+    requestPerServer: 30,
+    timeOut: 0,
   },
   agent: {
-    maxTimeWait: 500,
-    maxNumberResponse: 15,
+    maxTimeWait: 0,
+    maxNumberResponse: 30,
   },
 };
 

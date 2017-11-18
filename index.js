@@ -77,7 +77,7 @@ app.get('/sendRequest', (req, res) => {
     const requestPerServer = req.query.number;
     replace({
       regex: `requestPerServer: ${tempRequestPerServer},`,
-      replacement: `requestPerServer: ${Math.round(requestPerServer * 2 / 3)},`,
+      replacement: `requestPerServer: ${requestPerServer},`,
       paths: [file],
       recursive: true,
       silent: true,
@@ -89,7 +89,7 @@ app.get('/sendRequest', (req, res) => {
       recursive: true,
       silent: true,
     });
-    tempRequestPerServer = Math.round(requestPerServer * 2 / 3);
+    tempRequestPerServer = requestPerServer;
     tempNumberResponse = requestPerServer;
 
     require('./configurations/sendRequest').sendAll();
