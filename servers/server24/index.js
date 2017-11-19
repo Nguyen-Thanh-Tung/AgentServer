@@ -12,9 +12,9 @@ agent.connectServer({
   serverPort: '8000',
   accountName: '5a113dc57582526bbc6f01aa',
   accountAccessKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwicGFzc3dvcmQiOiIkMmEkMDgkb0JZZ1lraWR4d2M4NFNtbjVacXV3dU9HVkNqLzhMQ3F2T3hoaUVnb0xEeUU3MFcvYmNBaHkifQ.PJnhMvRjFsGdzcvQNhhxG7TwhrJyV6KLyXjEvISUNYQ',
-  serverId: '5a113dc57582526bbc6f01ab',
+  serverId: '5a113dc57582526bbc6f01c2',
   serverLocalIp: '192.168.1.39',
-  serverLocalName: 'DSD06-1-192.168.1.39',
+  serverLocalName: 'DSD06-24-192.168.1.39',
 });
 
 const WebSocket = require('ws');

@@ -3,7 +3,7 @@ const constants = {
   commandTest: 'loadtest -c 1 -t 10 http://127.0.0.1:',
   preNameServer: 'ws://',
   nameServer: 'localhost:',
-  ipServer: '10.10.153.136',
+  ipServer: '127.0.0.1',
   portServer: '8000',
   error: {
     connectDB: 'Error when connect db',
@@ -28,7 +28,7 @@ const constants = {
     timeOut: 0,
   },
   agent: {
-    maxTimeWait: 0,
+    maxTimeWait: 500,
     maxNumberResponse: 30,
   },
 };
