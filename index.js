@@ -48,6 +48,7 @@ app.get('/createServer/:number/:serverIp', (req, res) => {
       status: 500,
       message: 'Cant create server',
     })})`);
+    console.log("ok");
   } else {
     res.send(`callback(${JSON.stringify({
       status: 200,
