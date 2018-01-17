@@ -148,6 +148,7 @@ function stopAllServer(callback) {
       }
     }
     isOpen = false;
+    console.log('i am sorry')
   }
 }
 
